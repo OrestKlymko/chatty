@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ChatMessage {
-	private String content;
-	private String sender;
+public class Message {
+	private String senderName;
+	private String receiverName;
 	private MessageType messageType;
+	private String message;
 }
