@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  title: Chatty WebSocket API
+  description: API pre chat pomocou WebSocket
+  version: 1.0.0
+servers:
+  - url: ws://localhost:8080
+    description: Lokálny server
+
+paths:
+  /ws:
+    get:
+      summary: Pripojenie k WebSocket serveru
+      description: Použite tento koncový bod na pripojenie k WebSocket serveru
+      responses:
+        '101':
+          description: WebSocket pripojenie nadviazané
+  /chatroom/public:
+    post:
+      summary: Poslať správu do verejného chatu
+      description: Poslať správu do verejného chatu
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: Správa úspešne odoslaná
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+  /private-message:
+    post:
+      summary: Poslať súkromnú správu
+      description: Poslať súkromnú správu inému používateľovi
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: Správa úspešne odoslaná
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+
+components:
+  schemas:
+    Message:
+      type: object
+      properties:
+        senderName:
+          type: string
+          description: Meno odosielateľa
+        receiverName:
+          type: string
+          description: Meno príjemcu
+        messageType:
+          type: string
+          description: Typ správy
+        message:
+          type: string
+          description: Text správy
+      required:
+        - senderName
+        - messageType
+        - message
+    MessageType:
+      type: string
+      enum:
+        - CHAT
+        - JOIN
+        - LEAVE
+tags:
+  - name: WebSocket
+    description: WebSocket API pre chat
